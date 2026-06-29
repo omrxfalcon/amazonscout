@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = 'https://amazonscout-production.up.railway.app/api';
 const PRO_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // Decode JWT expiry locally — no network call needed

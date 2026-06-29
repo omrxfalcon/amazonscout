@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- ── AUTH SCREEN ── -->
+  <div id="screen-auth" class="screen hidden">
+    <div class="auth-header">
+      <div class="logo">🔍 AmazonScout</div>
+      <p class="auth-subtitle">Sign in to start scouting</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Sign In</button>
+      <button class="auth-tab" data-tab="register">Sign Up</button>
+    </div>
+    <div id="form-login">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@email.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••">
+      </div>
+      <div id="login-error" class="error-msg hidden"></div>
+      <button id="btn-login" class="btn-primary">Sign In</button>
+    </div>
+    <div id="form-register" class="hidden">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="you@email.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="Min 8 characters">
+      </div>
+      <div id="reg-error" class="error-msg hidden"></div>
+      <button id="btn-register" class="btn-primary">Create Account</button>
+    </div>
+  </div>
+
+  <!-- ── LOADING SCREEN ── -->
+  <div id="screen-loading" class="screen">
+    <div class="loading-center">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+  <!-- ── NO PRODUCT SCREEN ── -->
+  <div id="screen-no-product" class="screen hidden">
+    <header class="popup-header">
+      <span class="logo-sm">🔍 AmazonScout</span>
+      <div class="header-right">
+        <span id="np-pro-badge"></span>
+        <button id="np-logout" class="btn-signout">Sign out</button>
+      </div>
+    </header>
+    <div class="empty-state">
+      <div class="empty-icon">🛒</div>
+      <p class="empty-title" id="np-title">No product detected</p>
+      <p class="empty-sub" id="np-sub">Navigate to an Amazon product page to start scouting</p>
+      <button id="btn-retry" class="btn-link hidden" style="margin-top:14px;font-size:13px">↺ Try again</button>
+    </div>
+  </div>
+
+  <!-- ── MAIN SCREEN ── -->
+  <div id="screen-main" class="screen hidden">
+    <header class="popup-header">
+      <span class="logo-sm">🔍 AmazonScout</span>
+      <div class="header-right">
+        <span id="main-pro-badge"></span>
+        <button id="main-logout" class="btn-signout">Sign out</button>
+      </div>
+    </header>
+
+    <div class="tab-bar">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="financials">Financials</button>
+      <button class="tab" data-tab="listing">Listing</button>
+      <button class="tab" data-tab="saved">Saved</button>
+    </div>
+
+    <!-- Overview -->
+    <div id="tab-overview" class="tab-pane">
+      <div class="metric-grid">
+        <div class="metric-card">
+          <span class="metric-label">BSR Rank</span>
+          <span class="metric-value" id="m-bsr">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Est. Sales/mo</span>
+          <span class="metric-value" id="m-sales">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Opp. Score</span>
+          <span class="metric-value" id="m-score">—</span>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-title" id="p-title">—</p>
+        <p class="product-asin">ASIN: <span id="p-asin">—</span></p>
+      </div>
+      <div class="action-row">
+        <button id="btn-save" class="btn-primary hidden">Save Product</button>
+        <div id="save-pro-note" class="pro-note hidden">
+          <span class="badge-free">FREE</span>
+          Pro feature — <button class="btn-link" id="btn-upgrade-save">Upgrade ↗</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Financials -->
+    <div id="tab-financials" class="tab-pane hidden">
+      <div class="metric-grid">
+        <div class="metric-card">
+          <span class="metric-label">Price</span>
+          <span class="metric-value" id="f-price">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Total Fees</span>
+          <span class="metric-value" id="f-fees">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Est. Profit*</span>
+          <span class="metric-value" id="f-profit">—</span>
+        </div>
+      </div>
+      <div class="fin-details">
+        <div class="fin-row">
+          <span>Sale Price</span><span id="fd-price">—</span>
+        </div>
+        <div class="fin-row">
+          <span>Referral Fee (15%)</span><span id="fd-referral">—</span>
+        </div>
+        <div class="fin-row">
+          <span>FBA Fulfillment</span><span id="fd-fba">$4.00</span>
+        </div>
+        <div class="fin-row fin-total">
+          <span>Est. Profit / Unit</span><span id="fd-total">—</span>
+        </div>
+        <div class="fin-cogs-note">* before cost of goods (COGS)</div>
+        <div class="fin-row">
+          <span>Est. Monthly Revenue</span><span id="fd-revenue">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Listing -->
+    <div id="tab-listing" class="tab-pane hidden">
+      <div class="listing-rows">
+        <div class="listing-row">
+          <span class="listing-label">Rating</span>
+          <span class="listing-value" id="l-rating">—</span>
+        </div>
+        <div class="listing-row">
+          <span class="listing-label">Reviews</span>
+          <span class="listing-value" id="l-reviews">—</span>
+        </div>
+        <div class="listing-row">
+          <span class="listing-label">Category</span>
+          <span class="listing-value" id="l-category">—</span>
+        </div>
+        <div class="listing-row">
+          <span class="listing-label">ASIN</span>
+          <span class="listing-value" id="l-asin">—</span>
+        </div>
+        <div class="listing-row">
+          <span class="listing-label">Price</span>
+          <span class="listing-value" id="l-price">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved -->
+    <div id="tab-saved" class="tab-pane hidden">
+      <div id="saved-pro-gate" class="hidden">
+        <div class="upgrade-card">
+          <p class="upgrade-title">Pro Feature</p>
+          <p class="upgrade-sub">Save and track products across sessions with a Pro subscription</p>
+          <button id="btn-upgrade" class="btn-primary">Upgrade to Pro ↗</button>
+        </div>
+      </div>
+      <div id="saved-list" class="hidden">
+        <div id="saved-empty" class="hidden">
+          <p class="empty-sub" style="padding:20px 0;text-align:center">No saved products yet.<br>Save one from the Overview tab.</p>
+        </div>
+        <div id="saved-items"></div>
+      </div>
+    </div>
+
+    <footer class="popup-footer">
+      <span id="footer-email" class="footer-email"></span>
+      <button id="footer-logout" class="btn-signout">Sign out</button>
+    </footer>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

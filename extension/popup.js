@@ -283,7 +283,8 @@ async function init() {
   userIsPro = pro;
 
   const onProductPage = tab?.url &&
-    /amazon\.(com|co\.uk|de|fr|it|es|ca|co\.jp)\/.*\/dp\//.test(tab.url);
+    /amazon\.(com|co\.uk|de|fr|it|es|ca|co\.jp)\//.test(tab.url) &&
+    /\/dp\/[A-Z0-9]{10}/.test(tab.url);
 
   if (!onProductPage) {
     updateHeaderBadges();

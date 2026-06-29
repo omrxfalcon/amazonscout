@@ -7,13 +7,11 @@ const productsRoutes = require('./routes/products');
 
 const app = express();
 
-// Allow the configured CLIENT_URL and any Chrome extension origin
+// Allow only the configured extension origin (CLIENT_URL)
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // curl / Postman
-    const allowed = !origin ||
-      origin === process.env.CLIENT_URL ||
-      /^chrome-extension:\/\//.test(origin);
+    if (!origin) return callback(null, true); // curl / Postman / server-to-server
+    const allowed = origin === process.env.CLIENT_URL;
     callback(allowed ? null : new Error('Not allowed by CORS'), allowed);
   },
 }));
